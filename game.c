@@ -15,14 +15,13 @@ int game_selection(int*);
 //main function
 int main () {
     int in_game = 0;
-    int remain = 0;
     boot();
     while(1) {
         int game_mode = game_selection(&in_game);
         system("clear");
         switch (game_mode) {
             case 0:
-                poker(&in_game, &remain);
+                poker(&in_game);
                 break;
             case 1:
                 tic_tac_toe(&in_game);

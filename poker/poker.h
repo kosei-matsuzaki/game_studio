@@ -24,8 +24,8 @@ typedef struct {
 } round_info;
 
 // poker
-void poker(int *in_game, int* remain);
-void p_start(int *in_game, int *remain); 
+void poker(int *in_game);
+void p_start(int *in_game); 
 void p_initialize_game_info(game_info *g);
 void p_initialize_round_info(round_info *r);
 void p_title(game_info *g);
@@ -35,7 +35,7 @@ int p_result(int situation, game_info *g, round_info *r);
 int p_is_game_end(game_info *g);
 void p_update(game_info *g);
 void p_next(int *in_game, game_info *g);
-void p_end(int *in_game, int *remain, int *rank);
+void p_end(int *in_game, int *rank);
 
 //cauculator
 int p_alive_counter(int *alive);

@@ -7,9 +7,9 @@
 #include "../util/util.h"
 
 //main function
-void poker(int *in_game, int* remain) {
+void poker(int *in_game) {
     game_info game_info;
-    p_start(in_game, remain);
+    p_start(in_game);
     p_initialize_game_info(&game_info);
     while(*in_game == 1) {
         round_info round_info;
@@ -42,11 +42,11 @@ void poker(int *in_game, int* remain) {
         p_update(&game_info);
         p_next(in_game, &game_info);
     }
-    p_end(in_game, remain, game_info.rank);
+    p_end(in_game, game_info.rank);
 }
 
 //display startup
-void p_start(int *in_game, int *remain) {
+void p_start(int *in_game) {
     printf("\n");
     divider("", 'b');
     printf("Welcome to Texas Hold'em!\n\n");
@@ -57,7 +57,6 @@ void p_start(int *in_game, int *remain) {
         char c = get_single_char();
         if (c == '\n') {
             printf("GAME START!\n\n");
-            *remain = 1;
             break;
         } else if (c == 'q') {
             *in_game = 0;
@@ -427,7 +426,7 @@ void p_next(int *in_game, game_info *g) {
 }
 
 //display final result
-void p_end(int *in_game, int *remain, int *rank) {
+void p_end(int *in_game, int *rank) {
     if (*in_game == 1) {
         printf("\n");
         divider("FINAL RESULT", 'b');
@@ -441,7 +440,6 @@ void p_end(int *in_game, int *remain, int *rank) {
             printf("\n");
         }
         *in_game = 0;
-        *remain = 0;
     }
     printf("\n");
     divider("", 'b');
