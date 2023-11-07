@@ -49,17 +49,18 @@ gcc game.c */*.c -o play -lm -Wall && ./play
         ```c
             #include "maps.h"
             const map_info doremi = {
-                .id = 2,
-                .name = "Do-Re-Mi",
-                .difficulty = 2.0,
-                .bpm = 120,
-                .beat = 4,
-                .bar_count = 19,
-                .map = {...},
+                .id = 2, // ID（かぶりがないように）
+                .name = "Do-Re-Mi",// 曲のタイトル
+                .difficulty = 2.0, // 難易度
+                .bpm = 120, // bpm(1分間の拍数）
+                .beat = 4, // 1小節の拍数
+                .bar_count = 19, // 小節数
+                .map = {...}, // 1の場所にノーツ・拍数^2の配列を1小節に用意する
             };
         ```
-    3. ```rhythm/maps/maps.h```でextern
-    4. ```rhythm/map.c```のr_map_initializeとr_map_listに追記
+    3. 複数ノーツが短時間で連続すると入力検知が追いつかない可能性があります
+    4. ```rhythm/maps/maps.h```でextern
+    5. ```rhythm/map.c```のr_map_initializeとr_map_listに追記
 
 ## TODO
 - 

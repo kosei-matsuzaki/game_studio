@@ -17,7 +17,7 @@ void rhythm(int *in_game) {
         r_map_creator(map, map_info->map);
         while (status.playing == 1) {
             r_notes(map, *map_info, &status, count);
-            r_input(map, &status, count, r_tempo_calculator(map_info->bpm));
+            r_input(map, &status, count, r_tempo_calculator(map_info->bpm, map_info->beat));
             count++;
             usleep(r_wait);
             system("clear");
@@ -73,7 +73,7 @@ int r_select_map(map_status* status, int *in_game) {
 
 void r_notes(int map[1800][4], map_info map_info, map_status* status, int count) {
     r_print_score(status);
-    int position = count / r_tempo_calculator(map_info.bpm);
+    int position = count / r_tempo_calculator(map_info.bpm, map_info.beat);
     printf("    D   F   J   K    \n");
     for (int i = position; i < position + 20; i++) {
         if (i == position + 2) {

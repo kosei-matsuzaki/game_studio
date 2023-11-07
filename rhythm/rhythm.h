@@ -30,7 +30,7 @@ void r_map_end(map_info map, map_status* status, int count);
 void r_end();
 
 // map
-int r_tempo_calculator(int bpm);
+int r_tempo_calculator(int bpm, int beat);
 int r_time_calcutator(int bar_count, int beat, int bpm);
 void r_map_initialize();
 map_info* r_map_selecter(int id);

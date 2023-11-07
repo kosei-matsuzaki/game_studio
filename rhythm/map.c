@@ -13,11 +13,10 @@ typedef struct
     int result[5]; //great, good, bad, miss, maxcombo
 } map_status;
 
-int r_tempo_calculator(int bpm) {
+int r_tempo_calculator(int bpm, int beat) {
     // count 1200 in 1 min
-    // 1 beat =  4 * position change
-    // bpm beat = 4 * bpm * position change
-    return 1200 / (4 * bpm);
+    // dividing tempo = 1200 / (beat * bpm);
+    return 1200 / (beat * bpm);
 }
 
 int r_time_calcutator(int bar_count, int beat, int bpm) {
