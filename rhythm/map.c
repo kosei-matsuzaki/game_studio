@@ -2,15 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../util/util.h"
-
-typedef struct {
-    const int id;
-    const char* name;
-    const double difficulty;
-    const int time;
-    const int speed;
-    const int map[1800][4];
-} map_info;
+#include "maps/maps.h"
 
 typedef struct
 {
@@ -21,152 +13,25 @@ typedef struct
     int result[5]; //great, good, bad, miss, maxcombo
 } map_status;
 
-map_info map_list[100] = {
-    {
-        1,
-        "tutorial",
-        1.0,
-        120,
-        3,
-        {
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
+int r_tempo_calculator(int bpm) {
+    // count 1200 in 1 min
+    // 1 beat =  4 * position change
+    // bpm beat = 4 * bpm * position change
+    return 1200 / (4 * bpm);
+}
 
-            {1,0,0,0},
-            {0,0,0,0},
-            {0,1,0,0},
-            {0,0,0,0},
-            {0,0,1,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,1,0,0},
-            {0,0,0,0},
+int r_time_calcutator(int bar_count, int beat, int bpm) {
+    // beat count = bar_count * beat
+    // sec = 60 * (beat count / bpm)
+    return 60 * bar_count * beat / bpm;
+}
 
-            {0,0,1,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,1,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
+map_info map_list[100];
 
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,1,0},
-            {0,1,0,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,0,1,1},
-            {0,0,0,0},
-            {0,1,0,1},
-            {0,0,0,0},
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,1,0},
-            {0,1,0,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,0,1,1},
-            {0,0,0,0},
-            {0,1,0,1},
-            {0,0,0,0},
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-
-            {1,0,0,0},
-            {0,0,0,0},
-            {0,1,0,0},
-            {0,0,0,0},
-            {0,0,1,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,1},
-            {0,0,0,0},
-            {0,1,0,0},
-            {0,0,0,0},
-
-            {1,0,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,1,0,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,1,1},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-            {0,0,0,0},
-        },
-    },
-};
+void r_map_initialize() {
+    map_list[0] = pond_rain;
+    map_list[1] = doremi;
+}
 
 map_info* r_map_selecter(int id) {
     for (int i = 0; i < 100; i++) {
@@ -189,7 +54,8 @@ void r_map_creator(int map_duplicate[1800][4], const int map[1800][4]) {
 int r_map_list() {
     system("clear");
     divider("MUSIC LIST", 'b');
-    printf("a: Tutorial\n");
+    printf("a: Pond Rain\n");
+    printf("b: Do-Re-Mi\n");
     printf("\n");
     printf("q: Quit\n\n");
     divider("", 'b');
@@ -198,6 +64,7 @@ int r_map_list() {
     char game = get_single_char();
     switch (game) {
     case 'a': return 1;
+    case 'b': return 2;
     case 'q': return -1;
     default: return 0;
     }
@@ -210,8 +77,8 @@ int r_map_play_comfirm(int select, map_status* status) {
     divider("MAP INFO", 'b');
     printf("Title:      %s\n", map->name);
     printf("Difficulty: %.1lf\n", map->difficulty);
-    printf("Time:       %d sec\n", map->time);
-    printf("Speed:      %d bpm\n\n", map->speed);
+    printf("Time:       %d sec\n", r_time_calcutator(map->bar_count, map->beat, map->bpm));
+    printf("Speed:      %d bpm\n\n", map->bpm);
     divider("", 'b');
     printf("Press Enter To Start\n");
     printf("Press Q To Go Back To List\n\n");

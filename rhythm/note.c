@@ -55,3 +55,12 @@ void r_note_missed(int map[1800][4], map_status* status, int position) {
         }
     }
 }
+
+int r_count_note(int result[5]) {
+    int count = 0;
+    for (int i = 0; i < 4; i++) {
+        count += result[i];
+    }
+    if (count == 0) count = 1;
+    return count;
+}

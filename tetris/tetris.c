@@ -32,10 +32,7 @@ int b_wait = 50000;
 // main func
 void tetris(int *in_game) {
     b_start(in_game);
-    info info;
-    info.count = 0;
-    info.point = 0;
-    info.in_game = *in_game;
+    info info = { .count = 0, .point = 0, .in_game = *in_game };
     if (*in_game == 1) {
         b_initialize(&info);
     }

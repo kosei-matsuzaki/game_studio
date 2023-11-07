@@ -5,7 +5,7 @@
 #include "rhythm.h"
 #include "../util/util.h"
 
-int r_wait = 50000;
+int r_wait = 50000; //0.05s
 
 void rhythm(int *in_game) {
     r_start(in_game);
@@ -17,13 +17,12 @@ void rhythm(int *in_game) {
         r_map_creator(map, map_info->map);
         while (status.playing == 1) {
             r_notes(map, *map_info, &status, count);
-            r_input(map, &status, count, map_info->speed);
+            r_input(map, &status, count, r_tempo_calculator(map_info->bpm));
             count++;
             usleep(r_wait);
             system("clear");
             r_map_end(*map_info, &status, count);
         }
-        r_result(&status);
     }
     system("clear");
     r_end();
@@ -48,6 +47,7 @@ void r_start(int* in_game) {
             return;
         }
     }
+    r_map_initialize();
     sleep(1);
 }
 
@@ -72,8 +72,8 @@ int r_select_map(map_status* status, int *in_game) {
 }
 
 void r_notes(int map[1800][4], map_info map_info, map_status* status, int count) {
-    r_print_score(status->point, status->combo);
-    int position = count / map_info.speed;
+    r_print_score(status);
+    int position = count / r_tempo_calculator(map_info.bpm);
     printf("    D   F   J   K    \n");
     for (int i = position; i < position + 20; i++) {
         if (i == position + 2) {
@@ -99,8 +99,8 @@ void r_notes(int map[1800][4], map_info map_info, map_status* status, int count)
     r_note_missed(map, status, position);
 }
 
-void r_input(int map[1800][4], map_status* status, int count, int speed) {
-    int hit = count / speed + 2;
+void r_input(int map[1800][4], map_status* status, int count, int tempo) {
+    int hit = count / tempo + 2;
     if (kbhit()) {
         switch (getchar()) {
         case 'd':
@@ -124,23 +124,27 @@ void r_input(int map[1800][4], map_status* status, int count, int speed) {
 }
 
 void r_map_end(map_info map, map_status* status, int count) {
-    if (count / map.speed == map.time) {
+    if (count / 20 >= r_time_calcutator(map.bar_count, map.beat, map.bpm)) {
         status->playing = 0;
+        int fc = r_count_note(status->result);
+        double acc = ((double)status->result[0] + (double)status->result[1] * 0.8 + (double)status->result[2] * 0.4) * 100 / fc;
+        system("clear");
+        divider("RESULT", 'b');
+        r_print_rank(status->result);
+        printf("Point: %d\n", status->point);
+        printf("Max Combo: %d", status->result[4]);
+        if (status->result[4] == fc) {
+            printf(" (Full Combo!!!)");
+        }
+        printf("\n\n");
+        printf("Great: %d | Good: %d | Bad: %d | Miss: %d\n", status->result[0], status->result[1], status->result[2], status->result[3]);
+        printf("Accuracy: %.2f%%\n\n", acc);
+        divider("", 'b');
+        printf("Press Enter To Go Back To Map List");
+
+        while (get_single_char() != '\n') {}
     }
-
-}
-
-void r_result(map_status* status) {
-    system("clear");
-    divider("RESULT", 'b');
-    printf("Point: %d\n", status->point);
-    printf("Max Combo: %d\n", status->result[4]);
-    printf("\n");
-    printf("Great: %d | Good: %d | Bad: %d | Miss: %d\n\n", status->result[0], status->result[1], status->result[2], status->result[3] );
-    divider("", 'b');
-    printf("Press Enter To Go Back To Map List");
-
-    while (get_single_char() != '\n') {}
+  
 }
 
 void r_end() {

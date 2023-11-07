@@ -1,4 +1,5 @@
 # GAME STUDIO
+様々なゲームを遊ぶことができます
 
 ## HOW TO PLAY
 ターミナルで以下のコマンドを実行してください。
@@ -29,7 +30,35 @@ gcc game.c */*.c -o play -lm -Wall && ./play
     - S: 下に移動 
 - 1行消去すると10ポイントを取得します
 - 1分30秒ごとにレベルが上昇し、落下速度が上がります
- 
+
+### RHYTHM
+- プレイ人数: 1人
+- 左の列からD, F, J, Kのキーが割り当てられています
+- Qを押すといつでもプレイを中断できます
+- スコアについて
+    - SS: acc100%
+    - S:  miss無しかつacc92%以上
+    - A:  acc93%以上
+    - B:  acc85%以上
+    - C:  acc75%以上
+    - D:  acc75%未満
+- マップの追加方法
+    1. ```ryhthm/maps```下にcファイルを作成
+    2. 作成したcファイルに譜面情報を記入（以下例）
+        ```c
+            #include "maps.h"
+            const map_info doremi = {
+                .id = 2,
+                .name = "Do-Re-Mi",
+                .difficulty = 2.0,
+                .bpm = 120,
+                .beat = 4,
+                .bar_count = 19,
+                .map = {...},
+            };
+        ```
+    3. ```rhythm/maps/maps.h```でextern
+    4, ```rhythm/map.c```のr_map_initializeとr_map_listに追記
 
 ## TODO
 - 
