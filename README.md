@@ -5,7 +5,9 @@
 ターミナルで以下のコマンドを実行してください。
 ```shell
 git clone https://github.com/kosei-matsuzaki/game_studio
-gcc game.c */*.c -o play -lm -Wall && ./play
+```
+```shell
+gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
 ```
 
 ## EXPLANATION
