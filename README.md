@@ -4,6 +4,7 @@
 ## HOW TO PLAY
 ターミナルで以下のコマンドを実行してください。
 ```shell
+git clone https://github.com/kosei-matsuzaki/game_studio
 gcc game.c */*.c -o play -lm -Wall && ./play
 ```
 
@@ -58,7 +59,7 @@ gcc game.c */*.c -o play -lm -Wall && ./play
             };
         ```
     3. ```rhythm/maps/maps.h```でextern
-    4, ```rhythm/map.c```のr_map_initializeとr_map_listに追記
+    4. ```rhythm/map.c```のr_map_initializeとr_map_listに追記
 
 ## TODO
 - 
