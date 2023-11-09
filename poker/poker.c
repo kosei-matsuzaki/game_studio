@@ -60,7 +60,7 @@ void p_start(int *in_game) {
             break;
         } else if (c == 'q') {
             *in_game = 0;
-            break;
+            return;
         }
     }
     sleep(1);

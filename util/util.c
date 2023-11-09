@@ -71,3 +71,10 @@ int kbhit(void)
     }
     return 0;
 }
+
+void countdown(int count) {
+    for (int i = 0; i < count; i++) {
+        printf("%d...\n", count - i);
+        sleep(1);
+    }
+}

@@ -27,7 +27,7 @@ int frame[20][12] = {
     {1,0,0,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1,1,1},
 };
-int wait = 50000;
+int b_wait = 50000;
 
 // main func
 void tetris(int *in_game) {
@@ -46,6 +46,7 @@ void tetris(int *in_game) {
         b_block_processor(&info);
         info.in_game = b_next(&info);
         info.count ++;
+        usleep(b_wait);
         system("clear");
     }
     b_result(&info);
@@ -64,11 +65,13 @@ void b_start(int *in_game) {
     while (1) {
         char c = get_single_char();
         if (c == '\n') {
+            system("clear");
+            countdown(3);
             printf("GAME START!\n\n");
             break;
         } else if (c == 'q') {
             *in_game = 0;
-            break;
+            return;
         }
     }
     sleep(1);
@@ -89,7 +92,6 @@ void b_initialize(info *info) {
 
 // detect input
 void b_input(info *info) {
-    usleep(wait);
     if(kbhit()) {
         switch(getchar()) {
         case 'a': b_shift_left(info->blocks, &info->current_mino); break;
@@ -155,7 +157,6 @@ int b_next(info *info) {
 void b_result(info *info) {
     divider("RESULT", 'b');
     printf("Final Point: %d\n\n", info->point);
-    divider("", 'b');
     return;
 }
 

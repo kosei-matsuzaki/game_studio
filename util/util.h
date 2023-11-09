@@ -6,5 +6,6 @@ void clear_stream(void);
 char get_single_char(void);
 void divider(const char* message, char color);
 int kbhit(void);
+void countdown(int count);
  
 #endif // _POKER_H_
