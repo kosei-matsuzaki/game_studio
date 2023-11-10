@@ -27,7 +27,7 @@ int frame[20][12] = {
     {1,0,0,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1,1,1},
 };
-int b_wait = 50000;
+int b_render = 50000;
 
 // main func
 void tetris(int *in_game) {
@@ -43,7 +43,7 @@ void tetris(int *in_game) {
         b_block_processor(&info);
         info.in_game = b_next(&info);
         info.count ++;
-        usleep(b_wait);
+        usleep(b_render);
         system("clear");
     }
     b_result(&info);
