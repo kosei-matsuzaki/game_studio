@@ -21,6 +21,8 @@ typedef struct {
     int map[1800][4];
 } map_info;
 
+extern const int r_render;
+
 void rhythm(int *in_game);
 void r_start(int *in_game); 
 int r_select_map(map_status* status, int *in_game);
@@ -42,6 +44,7 @@ int r_map_play_comfirm(int select, map_status* status);
 void r_is_hit(int map[1800][4], map_status* status, int hit, int line);
 void r_note_missed(int map[1800][4], map_status* status, int position);
 int r_count_note(int result[5]);
+double r_accuracy(int result[5]);
 
 //printer
 void r_print_note(int n);

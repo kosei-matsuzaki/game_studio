@@ -3,20 +3,12 @@
 #include <stdlib.h>
 #include "../util/util.h"
 #include "maps/maps.h"
-
-typedef struct
-{
-    int playing;
-    int map_id;
-    int point;
-    int combo;
-    int result[5]; //great, good, bad, miss, maxcombo
-} map_status;
+#include "rhythm.h"
 
 int r_tempo_calculator(int bpm, int beat) {
-    // count 1200 in 1 min
-    // dividing tempo = 1200 / (beat * bpm);
-    return 1200 / (beat * bpm);
+    // count 60 * (1000000 / r_render) in 1 min
+    // dividing tempo =  count / (beat * bpm);
+    return 60 * 1000000 / (r_render * beat * bpm);
 }
 
 int r_time_calcutator(int bar_count, int beat, int bpm) {
@@ -30,6 +22,7 @@ map_info map_list[100];
 void r_map_initialize() {
     map_list[0] = pond_rain;
     map_list[1] = doremi;
+    map_list[2] = natsumatsuri;
 }
 
 map_info* r_map_selecter(int id) {
@@ -55,6 +48,7 @@ int r_map_list() {
     divider("MUSIC LIST", 'b');
     printf("a: Pond Rain\n");
     printf("b: Do-Re-Mi\n");
+    printf("c: Natumaturi\n");
     printf("\n");
     printf("q: Quit\n\n");
     divider("", 'b');
@@ -64,6 +58,7 @@ int r_map_list() {
     switch (game) {
     case 'a': return 1;
     case 'b': return 2;
+    case 'c': return 3;
     case 'q': return -1;
     default: return 0;
     }

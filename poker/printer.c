@@ -1,15 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
-
-const char* p_mark(int);
-const char* p_number(int);
-const char* p_name(int);
-const char* p_hand(int);
-const char* p_round_name(int);
-
-int p_current_pot(int*, int*);
-int p_bet_status(int, int*, int*, int*);
-void divider(const char*, char);
+#include "poker.h"
+#include "../util/util.h"
 
 //display player decision
 void p_print_bet(int player, char select, int num, int join_status) {

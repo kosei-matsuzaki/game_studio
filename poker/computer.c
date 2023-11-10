@@ -3,9 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
-
-int p_current_pot(int*, int*);
-int p_bet_status(int, int*, int*, int*);
+#include "poker.h"
 
 //calculate hand value
 int p_hand_value_calculator(int player, int situation, int *cards, int *cards_players) {

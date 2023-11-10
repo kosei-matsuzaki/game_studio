@@ -1,15 +1,6 @@
 ﻿#include <stdio.h>
 #include "../util/util.h"
-
-typedef struct
-{
-	int playing;
-	int map_id;
-	int point;
-	int combo;
-	int result[5]; //great, good, bad, miss, maxcombo
-} map_status;
-int r_count_note(int result[5]);
+#include "rhythm.h"
 
 void r_print_SS() {
 	printf("\x1b[97m");
@@ -106,8 +97,7 @@ void r_print_note_hit(int n, int p, int b1, int b2) {
 }
 
 void r_print_score(map_status* status) {
-	int nc = r_count_note(status->result);
-	double acc = ((double)status->result[0] + (double)status->result[1] * 0.8 + (double)status->result[2] * 0.4) * 100 / nc;
+	double acc = r_accuracy(status->result);
 	printf("\n");
 	divider("", 'b');
 	printf("Point: %d\n", status->point);
@@ -118,8 +108,7 @@ void r_print_score(map_status* status) {
 }
 
 void r_print_rank(int result[5]) {
-	int fc = r_count_note(result);
-	double acc = ((double)result[0] + (double)result[1] * 0.8 + (double)result[2] * 0.4) * 100 / fc;
+	double acc = r_accuracy(result);
 	if (acc == 100) {
 		r_print_SS();
 	}

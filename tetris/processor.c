@@ -2,14 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
-typedef struct {
-    int type[4][4];
-    int x;
-    int y;
-} mino;
-
-void b_new_mino(mino*, int);
+#include "tetris.h"
 
 void b_block_write(int blocks[20][12], mino *current_mino) {
     for (int i = 0; i < 4; i++) {

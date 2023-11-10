@@ -1,13 +1,5 @@
 #include <stdio.h>
-
-typedef struct
-{
-    int playing;
-    int map_id;
-    int point;
-    int combo;
-    int result[5]; //great, good, bad, miss, maxcombo
-} map_status;
+#include "rhythm.h"
 
 void r_is_hit(int map[1800][4], map_status* status, int hit, int line) {
     if (map[hit][line] == 1) {
@@ -63,4 +55,10 @@ int r_count_note(int result[5]) {
     }
     if (count == 0) count = 1;
     return count;
+}
+
+double r_accuracy(int result[5]) {
+    int nc = r_count_note(result);
+    double acc = ((double)result[0] + (double)result[1] * 0.85 + (double)result[2] * 0.5) * 100.0 / (double)nc;
+    return acc;
 }

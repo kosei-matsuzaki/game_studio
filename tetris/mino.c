@@ -2,12 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
-typedef struct {
-    int type[4][4];
-    int x;
-    int y;
-} mino;
+#include "tetris.h"
 
 int mino1[4][4] = {
     {0,0,0,0},

@@ -5,7 +5,7 @@
 #include "rhythm.h"
 #include "../util/util.h"
 
-int r_wait = 50000; //0.05s
+const int r_render = 25000; // 0.025s
 
 void rhythm(int *in_game) {
     r_start(in_game);
@@ -19,7 +19,7 @@ void rhythm(int *in_game) {
             r_notes(map, *map_info, &status, count);
             r_input(map, &status, count, r_tempo_calculator(map_info->bpm, map_info->beat));
             count++;
-            usleep(r_wait);
+            usleep(r_render);
             system("clear");
             r_map_end(*map_info, &status, count);
         }
@@ -124,10 +124,10 @@ void r_input(int map[1800][4], map_status* status, int count, int tempo) {
 }
 
 void r_map_end(map_info map, map_status* status, int count) {
-    if (count / 20 >= r_time_calcutator(map.bar_count, map.beat, map.bpm)) {
+    if (count / (1000000 / r_render) >= r_time_calcutator(map.bar_count, map.beat, map.bpm)) {
         status->playing = 0;
         int fc = r_count_note(status->result);
-        double acc = ((double)status->result[0] + (double)status->result[1] * 0.8 + (double)status->result[2] * 0.4) * 100 / fc;
+        double acc = r_accuracy(status->result);
         system("clear");
         divider("RESULT", 'b');
         r_print_rank(status->result);
