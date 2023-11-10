@@ -11,7 +11,6 @@ gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
 ```
 
 ## EXPLANATION
-
 ### TIC TAC TOE
 - プレイ人数: 2名
 - 始めに盤面のサイズ(3~20)と何目揃えたら勝ちかを設定してください
