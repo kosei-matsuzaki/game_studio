@@ -68,5 +68,3 @@ gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
     - ドレミの歌
     - 夏祭り
 
-## TODO
-- 
