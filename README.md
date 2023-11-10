@@ -14,7 +14,7 @@ gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
 ### TIC TAC TOE
 - プレイ人数: 2名
 - 始めに盤面のサイズ(3~20)と何目揃えたら勝ちかを設定してください
-    - 例えば  `Size: 3 Victory Condition: 3` とすれば〇×ゲーム（クソゲー）になります
+    - 例えば  `Size: 3 Victory Condition: 3` とすれば〇×ゲームになります
 - 入力は縦と横の数字を指定してください
 
 ### TEXAS HOLD'EM
