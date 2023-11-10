@@ -63,6 +63,10 @@ gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
     3. 複数ノーツが短時間で連続すると入力検知が追いつかない可能性があります
     4. ```rhythm/maps/maps.h```でextern
     5. ```rhythm/map.c```のr_map_initializeとr_map_listに追記
+- マップ一覧(2023/11/10)
+    - 池の雨（ヤマハの音楽）
+    - ドレミの歌
+    - 夏祭り
 
 ## TODO
 - 
