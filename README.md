@@ -9,9 +9,9 @@ git clone https://github.com/kosei-matsuzaki/game_studio
 ```shell
 gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
 ```
-ターミナルの種類によって処理が追い付かず、画面が点滅してしまう可能性があります
+※ターミナルの種類によって処理が追い付かず、画面が点滅してしまう可能性があります
 
-## EXPLANATION
+## RULES
 ### TIC TAC TOE
 - プレイ人数: 2名
 - 始めに盤面のサイズ(3~20)と何目揃えたら勝ちかを設定してください
@@ -65,7 +65,7 @@ gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
     4. ```rhythm/maps/maps.h```でextern
     5. ```rhythm/map.c```のr_map_initializeとr_map_listに追記
 - マップ一覧(2023/11/10)
-    - 池の雨（ヤマハの音楽）
+    - 池の雨
     - ドレミの歌
     - 夏祭り
 
