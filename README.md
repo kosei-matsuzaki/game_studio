@@ -2,13 +2,14 @@
 様々なゲームを遊ぶことができます
 
 ## HOW TO PLAY
-ターミナルで以下のコマンドを実行してください。
+ターミナルで以下のコマンドを実行してください
 ```shell
 git clone https://github.com/kosei-matsuzaki/game_studio
 ```
 ```shell
 gcc game.c */*.c */*/*.c -o play -lm -Wall && ./play
 ```
+ターミナルの種類によって処理が追い付かず、画面が点滅してしまう可能性があります
 
 ## EXPLANATION
 ### TIC TAC TOE

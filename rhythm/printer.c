@@ -63,10 +63,10 @@ void r_print_note(int n) {
 	{
 	case 0: printf("   "); break;
 	case 1: printf(" ♦ "); break;
-	case 2: printf(" \x1b[31m*\x1b[0m "); break;
-	case 3: printf(" \x1b[33m*\x1b[0m "); break;
-	case 4: printf(" \x1b[33m*\x1b[0m "); break;
-	case 5: printf(" \x1b[34m*\x1b[0m "); break;
+	case 2: printf(" \x1b[31m \x1b[0m "); break;
+	case 3: printf(" \x1b[33m \x1b[0m "); break;
+	case 4: printf(" \x1b[33m \x1b[0m "); break;
+	case 5: printf(" \x1b[34m \x1b[0m "); break;
 	case 6: printf("   "); break;
 	default:
 		break;
