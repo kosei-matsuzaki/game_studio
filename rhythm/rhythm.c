@@ -5,7 +5,7 @@
 #include "rhythm.h"
 #include "../util/util.h"
 
-const int r_render = 25000; // 0.025s
+const int r_render = 40000; // 0.050s
 
 void rhythm(int *in_game) {
     r_start(in_game);
