@@ -32,7 +32,7 @@ void divider(const char* a, char color) {
         case 'b': printf("\x1b[36m"); break;
         default: break;
     }
-    for (int i = 0; i < 20 - (l / 2); i++) {
+    for (int i = 0; i < 25 - (l / 2); i++) {
         printf("=");
     }
     if (l != 0) {
@@ -40,7 +40,7 @@ void divider(const char* a, char color) {
     } else {
         printf("==");
     }
-    for (int i = 0; i < 20 - ((l + 1)/ 2); i++) {
+    for (int i = 0; i < 25 - ((l + 1)/ 2); i++) {
         printf("=");
     }
     printf("\x1b[0m\n\n");
