@@ -27,97 +27,136 @@ int frame[20][12] = {
     {1,0,0,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1,1,1},
 };
-int b_render = 50000;
+int render = 50000; //0.05s
 
 // main func
 void tetris(int *in_game) {
-    b_start(in_game);
-    info info = { .count = 0, .point = 0, .in_game = *in_game };
-    if (*in_game == 1) {
-        b_initialize(&info);
+    start(in_game);
+    while (*in_game) {
+        info info = { .count = 0, .point = 0, .in_game = *in_game };
+        initialize(&info);
+        while (1) {
+            display(&info);
+            input(&info);
+            block_processor(&info);
+            if (next(&info) == 0) {
+                break;
+            };
+            info.count++;
+            usleep(render);
+            system("clear");
+        }
+        if (result(&info, in_game)) {
+            start(in_game);
+        }
     }
-
-    while (info.in_game == 1) {
-        b_display(&info);
-        b_input(&info);
-        b_block_processor(&info);
-        info.in_game = b_next(&info);
-        info.count ++;
-        usleep(b_render);
-        system("clear");
-    }
-    b_result(&info);
-    b_end();
+    end();
     return;
 }
 
 // display startup
-void b_start(int *in_game) {
-    printf("\n");
-    divider("", 'b');
-    printf("Welcome to Tetris!\n\n");
-    divider("", 'b');
-    printf("\x1b[33mPress Enter To Start\x1b[0m\n");
-    printf("\x1b[34mPress Q To Quit\x1b[0m\n");
+void start(int *in_game) {
     while (1) {
-        char c = get_single_char();
-        if (c == '\n') {
-            system("clear");
-            countdown(3);
-            printf("GAME START!\n\n");
-            break;
-        } else if (c == 'q') {
-            *in_game = 0;
-            return;
+        system("clear");
+        printf("\n");
+        print_title();
+        int score[5] = { 0,0,0,0,0 };
+        time_t record_time[5] = { 0 };
+        read_data(score, record_time);
+        print_ranking(-1, score, record_time);
+        printf("\x1b[33mPress Enter To Start\x1b[0m\n");
+        printf("Press   D   To Delete Data\n");
+        printf("Press   Q   To Quit\n");
+        while (1) {
+            char c = get_single_char();
+            if (c == '\n') {
+                system("clear");
+                countdown(3);
+                printf("GAME START!\n\n");
+                sleep(1);
+                return;
+            }
+            else if (c == 'q') {
+                *in_game = 0;
+                return;
+            }
+            else if (c == 'd') {
+                printf("\x1b[31mDo You Really Want To Delete? y/n\x1b[0m\n");
+                if (get_single_char() == 'y') {
+                    int dummy[5] = { 0 };
+                    time_t dummy2[5] = { 0 };
+                    register_data(dummy, dummy2);
+                    printf("Data deleted\n");
+                    sleep(1);
+                }     
+                break;
+            }
         }
     }
-    sleep(1);
 }
 
 // initial setting
-void b_initialize(info *info) {
+void initialize(info *info) {
     srandom((unsigned)time(NULL));
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 12; j++) {
             info->blocks[i][j] = frame[i][j];
         }
     }
-    b_new_mino(&info->current_mino, random() % 7 + 1);
-    info->next_mino_type = random() % 7 + 1;
+    info->current_mino_type = random() % 7 + 1;
+    new_mino(&info->current_mino, info->current_mino_type);
+    info->next_mino_type = circulation(info->current_mino_type);
     info->level = 0;
+    info->hold_mino_type = 0;
+    info->do_hold = 0;
 }
 
 // detect input
-void b_input(info *info) {
+void input(info *info) {
     if(kbhit()) {
         switch(getchar()) {
-        case 'a': b_shift_left(info->blocks, &info->current_mino); break;
-        case 'd': b_shift_right(info->blocks, &info->current_mino); break;
-        case 'q': b_shift_rotate(info->blocks, &info->current_mino, 3); break;
-        case 'e': b_shift_rotate(info->blocks, &info->current_mino, 1); break;
-        case 's': b_shift_fall(info->blocks, &info->current_mino, &info->next_mino_type); break;
+        case 'a': shift_left(info->blocks, &info->current_mino); break;
+        case 'd': shift_right(info->blocks, &info->current_mino); break;
+        case 'q': shift_rotate(info->blocks, &info->current_mino, 3); break;
+        case 'e': shift_rotate(info->blocks, &info->current_mino, 1); break;
+        case 's': shift_fall(info->blocks, &info->current_mino, &info->next_mino_type, &info->current_mino_type, &info->hold_mino_type, &info->do_hold); info->point++; break;
+        case 'f': shift_hold(&info->current_mino, &info->next_mino_type, &info->current_mino_type, &info->hold_mino_type, &info->do_hold); break;
+        case 'w': shift_harddrop(info->blocks, &info->current_mino, &info->next_mino_type, &info->current_mino_type, &info->do_hold, &info->point); break;
         default: break;
         }            
     }
 }
 
 // display
-void b_display(info *info) {
-    b_print_status(info->point, info->level);
+void display(info *info) {
+    print_status(info->point, info->level);
     divider("", 'b');
-    b_next_mino(info->next_mino_type);
+    hold_mino(info->hold_mino_type);
+    next_mino(info->next_mino_type);
+    mino shadow = info->current_mino;
+    while (is_movable(info->blocks, &shadow) == 1) {
+        (shadow.y) ++;
+    }
+    (shadow.y) --;
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 12; j++) {
             int x = j - info->current_mino.x;
             int y = i - info->current_mino.y;
+            int y_shadow = i - shadow.y;
             if (0 <= x && x <= 3 && 0 <= y && y <= 3) {
                 if (info->current_mino.type[y][x] > 1) {
-                    b_print_block(info->current_mino.type[y][x]);
+                    print_block(info->current_mino.type[y][x]);
+                    continue;
+                }
+            }
+            if (0 <= x && x <= 3 && 0 <= y_shadow && y_shadow <= 3) {
+                if (shadow.type[y_shadow][x] > 1) {
+                    print_shadow(shadow.type[y_shadow][x]);
                     continue;
                 }
             }
             if (info->blocks[i][j] >= 1) {
-                b_print_block(info->blocks[i][j]);
+                print_block(info->blocks[i][j]);
             } else {
                 printf("  ");
             }
@@ -129,17 +168,16 @@ void b_display(info *info) {
 }
 
 // move block
-void b_block_processor(info *info) {
-    // todo faster
+void block_processor(info *info) {
     if (info->count % (10 - info->level) == 0) {
-        b_shift_fall(info->blocks, &info->current_mino, &info->next_mino_type);
+        shift_fall(info->blocks, &info->current_mino, &info->next_mino_type, &info->current_mino_type, &info->hold_mino_type, &info->do_hold);
     }
-    b_line_remover(info->blocks, &info->point);
+    line_remover(info->blocks, &info->point);
     return;
 }
 
 // is game end
-int b_next(info *info) {
+int next(info *info) {
     for(int i = 1; i < 11; i++)  {
         if(info->blocks[1][i] > 1){
             return 0;
@@ -151,14 +189,48 @@ int b_next(info *info) {
     return 1;
 }
 
-void b_result(info *info) {
-    divider("RESULT", 'b');
-    printf("Final Point: %d\n\n", info->point);
-    return;
+int result(info *info, int *in_game) {
+    int score[5] = { 0,0,0,0,0 };
+    time_t record_time[5] = { 0 };
+    int new = 0;
+    read_data(score, record_time);
+    for (int i = 0; i < 5; i++) {
+        if (score[i] < info->point) {
+            new = i;
+            for (int j = 4; j > i; j--) {
+                score[j] = score[j - 1];
+                record_time[j] = record_time[j - 1];
+            }
+            score[i] = info->point;
+            record_time[i] = time(NULL);
+            break;
+        }
+    }
+    register_data(score, record_time);
+    print_result(info->point, new, score, record_time);
+
+    printf("\x1b[33mPress Enter To Retry\x1b[0m\n");
+    printf("Press   B   To Go Back To Start Menu\n");
+    printf("Press   Q   To End Game\n");
+    while (1) {
+        char c = get_single_char();
+        if (c == '\n') {
+            return 0;
+        }
+        else if (c == 'q') {
+            *in_game = 0;
+            return 0;
+        }
+        else if (c == 'b') {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 // end
-void b_end() {
+void end() {
+    system("clear");
     divider("", 'b');
     printf("THANK YOU FOR PLAYING!!!\n");
     printf("Press Enter To Leave\n");
